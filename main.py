@@ -89,8 +89,8 @@ def Window(userwidth):
     for brow in range(userwidth):
         bcols = []
         for bcol in range(userwidth):
-            #bcols.append(tkinter.Button(window,text=str(gameRows[brow][bcol].value), command=lambda xy=[brow, bcol]: CellClicked(xy)))
-            bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellClicked(xy, userwidth)))
+            bcols.append(tkinter.Button(window,text=str(gameRows[brow][bcol].value), command=lambda xy=[brow, bcol]: CellClicked(xy)))
+            #bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellClicked(xy, userwidth)))
 
         brows.append(bcols)
         for bcol in range(userwidth):   
