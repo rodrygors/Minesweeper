@@ -40,8 +40,8 @@ def GameStart(userwidth):
             col.append(Cell())
         rows.append(col)        
     print(userwidth)
-    n = random.randint(userwidth,userwidth^2)
-
+    n = random.randint(userwidth,userwidth*2)
+    print("Bombs: " + str(n))
     for b in range(n):
         flag = True
         while(flag):
@@ -63,7 +63,7 @@ def GameStart(userwidth):
 
 def CellLeftClicked(xy):
     
-    print(str(xy[0]) + ", " + str(xy[1]) + ":" + str(rows[xy[0]][xy[1]]))
+    print(str(xy[0]) + ", " + str(xy[1]) + ": " + str(rows[xy[0]][xy[1]]))
     #HERE!!
     
     if rows[xy[0]][xy[1]].value == 'B':
