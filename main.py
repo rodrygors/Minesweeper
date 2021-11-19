@@ -17,9 +17,13 @@ class Cell():
 
 def CheckCell(x, y):
     if(rows[x][y].value == 0):
-        for i in range(-1,2):
-            for j in range(-1,2):
-                if((rows[i][j].visible!=True) and (rows[i][j].value==0)):
+        for i in range(x-1,x+2):
+            for j in range(y-1,y+2):
+                print("About to check: " + str(i) + ", " + str(j))
+                if(((0<=i<20) and (0<=j<20) and rows[i][j].visible!=True)):
+                    print(str(i) + ", " + str(j) + ":" + str(rows[i][j]))
+                    brows[x][y].config(text="   "+str(rows[x][y].value)+"   ")
+                    rows[x][y].visible=True
                     CheckCell(i,j)
     else:
         brows[x][y].config(text="   "+str(rows[x][y].value)+"   ")
@@ -36,7 +40,7 @@ def GameStart(userwidth):
             col.append(Cell())
         rows.append(col)        
     print(userwidth)
-    n = random.randint(userwidth^2//5,userwidth^2//3)
+    n = random.randint(userwidth,userwidth^2)
 
     for b in range(n):
         flag = True
@@ -57,9 +61,9 @@ def GameStart(userwidth):
     
     return rows
 
-def CellClicked(xy,userwidth):
+def CellLeftClicked(xy):
     
-    print(str(rows[xy[0]][xy[1]]))
+    print(str(xy[0]) + ", " + str(xy[1]) + ":" + str(rows[xy[0]][xy[1]]))
     #HERE!!
     
     if rows[xy[0]][xy[1]].value == 'B':
@@ -77,6 +81,9 @@ def CellClicked(xy,userwidth):
         brows[xy[0]][xy[1]].config(text= "   " + str(rows[xy[0]][xy[1]].value) + "   ")
         rows[xy[0]][xy[1]].visible=True
         
+def CellRightClicked(xy):
+    if not rows[xy[0]][xy[1]].visible: 
+        brows[xy[0]][xy[1]].config(text= "   !   ")
 
 
 def Window(userwidth):
@@ -90,11 +97,16 @@ def Window(userwidth):
         bcols = []
         for bcol in range(userwidth):
             #bcols.append(tkinter.Button(window,text=str(gameRows[brow][bcol].value), command=lambda xy=[brow, bcol]: CellClicked(xy)))
-            bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellClicked(xy, userwidth)))
+            bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellLeftClicked(xy)))
+            #bcols.append(tkinter.Frame(window,width=30, height=25, background="gray"))
 
         brows.append(bcols)
         for bcol in range(userwidth):   
             brows[brow][bcol].place(x=(100-(userwidth/2))+(brow*30), y=(200-(userwidth/2))+(bcol*25))
+            # xy=[brow, bcol]
+            # brows[brow][bcol].bind("<Button-1>", CellLeftClicked(xy))
+            # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
+            # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
 
     # for brow in range(userwidth):
     #     print(brows[brow])
