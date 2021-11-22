@@ -1,9 +1,12 @@
 import random
 import tkinter
 
+global userwidth
+global rows
+global brows
 userwidth = 20
-rows = []
-brows = []
+rows=[]
+brows=[]
 
 class Cell():
     value = 0
@@ -18,20 +21,21 @@ class Cell():
 def CheckCell(x, y):
     if(rows[x][y].value == 0):
         for i in range(x-1,x+2):
-            for j in range(y-1,y+2):
-                print("About to check: " + str(i) + ", " + str(j))
-                if(((0<=i<20) and (0<=j<20) and rows[i][j].visible!=True)):
-                    print(str(i) + ", " + str(j) + ":" + str(rows[i][j]))
-                    brows[x][y].config(text="   "+str(rows[x][y].value)+"   ")
-                    rows[x][y].visible=True
-                    CheckCell(i,j)
+            if userwidth>i>=0:
+                for j in range(y-1,y+2):
+                    if (userwidth>j>=0 and rows[i][j].visible!=True):
+                        #print("About to check: " + str(i) + ", " + str(j))
+                        #print(str(i) + ", " + str(j) + ":" + str(rows[i][j]))
+                        brows[x][y].config(text="   "+str(rows[x][y].value)+"   ")
+                        rows[x][y].visible=True
+                        CheckCell(i,j)
     else:
         brows[x][y].config(text="   "+str(rows[x][y].value)+"   ")
         rows[x][y].visible=True
     
     
 
-def GameStart(userwidth):
+def GameStart():
     
     cell = Cell()
     for row in range(userwidth):
@@ -74,7 +78,9 @@ def CellLeftClicked(xy):
                     rows[r][c].visible=True
                 else:
                     brows[r][c].config(text="   " + str(rows[r][c].value) + "   ")
-                    rows[r][c].visible=True
+                    rows[r][c].visible=True 
+                
+
     elif rows[xy[0]][xy[1]].value == 0:
         CheckCell(xy[0], xy[1])
     else:
@@ -85,14 +91,43 @@ def CellRightClicked(xy):
     if not rows[xy[0]][xy[1]].visible: 
         brows[xy[0]][xy[1]].config(text= "   !   ")
 
+def GameReset(window):
+    for row in range(userwidth):
+        for col in range(userwidth):
+            brows[row][col].destroy()
+    GameStart()
 
-def Window(userwidth):
-    gameRows = GameStart(userwidth)
+    brows.clear()
+    for brow in range(userwidth):
+        bcols = []
+        for bcol in range(userwidth):
+            #bcols.append(tkinter.Button(window,text=str(gameRows[brow][bcol].value), command=lambda xy=[brow, bcol]: CellClicked(xy)))
+            bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellLeftClicked(xy)))
+            #bcols.append(tkinter.Frame(window,width=30, height=25, background="gray"))
+
+        brows.append(bcols)
+        for bcol in range(userwidth):   
+            brows[brow][bcol].place(x=(100-(userwidth/2))+(brow*30), y=(200-(userwidth/2))+(bcol*25))
+            # xy=[brow, bcol]
+            # brows[brow][bcol].bind("<Button-1>", CellLeftClicked(xy))
+            # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
+            # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
+
+def Window():
+    GameStart()
     window = tkinter.Tk()
     window.geometry("800x775")
     window.maxsize(800, 775)
     # Code to add widgets will go here...
     
+    resetb = tkinter.Button(window, text= "RESET", command=lambda : GameReset(window))
+    resetb.pack()
+
+    quitb = tkinter.Button(window, text= "QUIT", command=lambda : window.destroy())
+    quitb.pack()
+    
+    #flagb = tkinter.Button(window, text= "FLAG", command=lambda : )
+
     for brow in range(userwidth):
         bcols = []
         for bcol in range(userwidth):
@@ -113,4 +148,4 @@ def Window(userwidth):
     #     for bcol in range(userwidth):
     window.mainloop()
 
-Window(userwidth)
+Window()
