@@ -96,18 +96,30 @@ def GameReset(window):
         for col in range(userwidth):
             brows[row][col].destroy()
     GameStart()
-
     brows.clear()
+
+    PlaceButtons(window)
+
+def PlaceButtons(window):
+    buttonsFrame=tkinter.Frame(window, width=(userwidth*30), height=(userwidth*30))
+    buttonsFrame.pack(pady=5)
     for brow in range(userwidth):
         bcols = []
         for bcol in range(userwidth):
             #bcols.append(tkinter.Button(window,text=str(gameRows[brow][bcol].value), command=lambda xy=[brow, bcol]: CellClicked(xy)))
-            bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellLeftClicked(xy)))
-            #bcols.append(tkinter.Frame(window,width=30, height=25, background="gray"))
+            #bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellLeftClicked(xy)))
+            bcols.append(tkinter.Frame(buttonsFrame,background="red"))
+            
+            
 
         brows.append(bcols)
-        for bcol in range(userwidth):   
-            brows[brow][bcol].place(x=(100-(userwidth/2))+(brow*30), y=(200-(userwidth/2))+(bcol*25))
+        for bcol in range(userwidth): 
+            label = tkinter.Label(brows[brow][bcol], text= "   " + str(rows[brow][bcol]) + "   ")
+            label.pack(padx=1, pady=1)
+            brows[brow][bcol].grid(row=brow, column=bcol)
+        #     brows[brow][bcol].grid(column=bcol, row= 0)
+
+            #brows[brow][bcol].place(x=(100-(userwidth/2))+(brow*30), y=(200-(userwidth/2))+(bcol*25))
             # xy=[brow, bcol]
             # brows[brow][bcol].bind("<Button-1>", CellLeftClicked(xy))
             # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
@@ -128,20 +140,7 @@ def Window():
     
     #flagb = tkinter.Button(window, text= "FLAG", command=lambda : )
 
-    for brow in range(userwidth):
-        bcols = []
-        for bcol in range(userwidth):
-            #bcols.append(tkinter.Button(window,text=str(gameRows[brow][bcol].value), command=lambda xy=[brow, bcol]: CellClicked(xy)))
-            bcols.append(tkinter.Button(window,text= "       ", command=lambda xy=[brow, bcol]: CellLeftClicked(xy)))
-            #bcols.append(tkinter.Frame(window,width=30, height=25, background="gray"))
-
-        brows.append(bcols)
-        for bcol in range(userwidth):   
-            brows[brow][bcol].place(x=(100-(userwidth/2))+(brow*30), y=(200-(userwidth/2))+(bcol*25))
-            # xy=[brow, bcol]
-            # brows[brow][bcol].bind("<Button-1>", CellLeftClicked(xy))
-            # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
-            # brows[brow][bcol].bind("<Button-2>", CellRightClicked(xy))
+    PlaceButtons(window)
 
     # for brow in range(userwidth):
     #     print(brows[brow])
