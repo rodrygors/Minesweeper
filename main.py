@@ -42,7 +42,7 @@ def GameStart(userwidth):
             col.append(Cell())
         rows.append(col)        
     print(userwidth)
-    n = random.randint(userwidth,userwidth*2)
+    n = random.randint(userwidth*2,userwidth*3)
     print("Bombs: " + str(n))
     for b in range(n):
         flag = True
