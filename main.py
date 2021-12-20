@@ -1,7 +1,7 @@
 import random
 import tkinter
 
-userwidth = 20
+userwidth =15
 rows = []
 brows = []
 flag = False
@@ -9,6 +9,7 @@ flag = False
 window = tkinter.Tk()
 window.geometry("800x775")
 window.maxsize(800, 775)
+window.title("Minesweeper")
 class Cell():
     value = 0
     visible = False
@@ -25,7 +26,7 @@ def CheckCell(x, y):
         for i in range(x-1,x+2):
             for j in range(y-1,y+2):
                 print("About to check: " + str(i) + ", " + str(j))
-                if(((0<=i<20) and (0<=j<20) and rows[i][j].visible!=True)):
+                if(((0<=i<userwidth) and (0<=j<userwidth) and rows[i][j].visible!=True)):
                     print(str(i) + ", " + str(j) + ":" + str(rows[i][j]))
                     brows[x][y].config(text="   "+str(rows[x][y].value)+"   ")
                     rows[x][y].visible=True
@@ -77,8 +78,12 @@ def CellLeftClicked(xy):
         for r in range(userwidth):
             for c in range(userwidth):
                 if rows[r][c].value == 'B':
-                    brows[r][c].config(text="   B   ", bg= "red")
-                    rows[r][c].visible=True
+                    if rows[r][c].flagged:
+                        brows[r][c].config(text="  ! B  ", bg= "red")
+                        rows[r][c].visible=True
+                    else:
+                        brows[r][c].config(text="   B   ", bg= "red")
+                        rows[r][c].visible=True
                 else:
                     brows[r][c].config(text="   " + str(rows[r][c].value) + "   ", bg = "white")
                     rows[r][c].visible=True
@@ -132,7 +137,7 @@ def MapInit(userwidth):
             col.append(Cell())
         rows.append(col)        
     print(userwidth)
-    n = random.randint(userwidth*2,userwidth*3)
+    n = random.randint((userwidth**2)//10,(userwidth**2)//7)
     print("Bombs: " + str(n))
     for b in range(n):
         flag = True
@@ -158,9 +163,8 @@ def Window(userwidth):
     fbutton = tkinter.Button(window,text= "Flag", bg = "white", command=lambda :Fswitch(fbutton))
     rbutton = tkinter.Button(window,text= "Reset", bg = "white", command=lambda :ResetGame(window,userwidth))
     GameStart(window, userwidth)
-    #fbutton.place(x=400,y=50)
-    fbutton.pack()
-    rbutton.pack()
+    fbutton.place(x=90,y=150)
+    rbutton.place(x=650,y=150)
     # for brow in range(userwidth):
     #     print(brows[brow])
     #     for bcol in range(userwidth):
